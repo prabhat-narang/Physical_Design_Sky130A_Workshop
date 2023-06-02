@@ -26,23 +26,31 @@ To run the sythesis step, which runs Yosys and ABC, run command `run_synthesis`.
 ![Screenshot of Synthesis step]()
 
 After the command has executed, Yosys + ABC as well as STA has been done. The final synthesis statistic report is displayed. 
+![Screenshot of Synthesis Statistics]()
 
 To find the flop ratio,
 ```
                  No. of D flip flop
-Flop Ratio =    ____________________   x 100
+Flop Ratio =    ____________________   
                  Total no. of cells
 ```              
 ```
-No. of D Flip Flops = [PDK]_sc_[variant]_dfxtp_4 = 
-Total no. of cells = 
-Flop Ratio = 
+No. of D Flip Flops = [PDK]_sc_[variant]__dfxtp_2 = 1613
+Total no. of cells = 14876
+Flop Ratio = 1613/14876 = 0.1084
 ```
+![Screenshot of result synthesis]()
+
 
 - The synthesised netlist os generated in the '/results/synthesis' folder as described before. 
 - In the '/reports/synthesis' folder, 
-    - we can find 'yosys_2.stat.rpt' statistics report as displayed in terminal after syntheis command is executed. 
-    - we can find 'opensta_main.timing.rpt' OpenSTA timing report file.
+    - we can find '1-yosys_4.stat.rpt' statistics report as displayed in terminal after syntheis command is executed. 
+    - we can find '2-opensta_main.timing.rpt' OpenSTA timing report file.
+
+![Screenshot of opensta timing report]() 
+
+
+
 
 
 
