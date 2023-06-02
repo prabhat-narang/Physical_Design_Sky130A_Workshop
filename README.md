@@ -2,7 +2,7 @@
 
 
 ## Introduction to OpenLANE
-Helpful links:\ 
+Helpful links:
 - [OpenLANE Github repository](https://github.com/efabless/openlane)
 - [Fossi Dial Up Tim Ansell](https://www.youtube.com/watch?v=EczW2IWdnOM&list=PLUg3wIOWD8yoZCg9XpFSgEgljx6MSdm9L&index=2)
 - [Fossi Dial Up Mohamed Shalan](https://www.youtube.com/watch?v=Vhyv0eq_mLU&list=PLUg3wIOWD8yoZCg9XpFSgEgljx6MSdm9L&index=3)
@@ -19,10 +19,34 @@ After successfull execution of design preparation step, a 'runs' folder appears 
 - logs: Contains logs for each stage.
 - config.tcl: This file shows all default parameters taken by run. Also contains location of tlef, lef, lib and other important files. The parameters in this file are updated on the go. So after a stage, if we decide to change a parameter of that step, the changes will be displayed in this file, and can be used for debugging.
 - cmds.log: Contains log of commands that are executed.
+![Screenshot of Reviewing Files]()
 
 ### Running Synthesis Step
 To run the sythesis step, which runs Yosys and ABC, run command `run_synthesis`. This step usually take 5-6 minutes to execute.
 ![Screenshot of Synthesis step]()
+
+After the command has executed, Yosys + ABC as well as STA has been done. The final synthesis statistic report is displayed. 
+
+To find the flop ratio,
+```
+                 No. of D flip flop
+Flop Ratio =    ____________________   x 100
+                 Total no. of cells
+```              
+```
+No. of D Flip Flops = [PDK]_sc_[variant]_dfxtp_4 = 
+Total no. of cells = 
+Flop Ratio = 
+```
+
+- The synthesised netlist os generated in the '/results/synthesis' folder as described before. 
+- In the '/reports/synthesis' folder, 
+    - we can find 'yosys_2.stat.rpt' statistics report as displayed in terminal after syntheis command is executed. 
+    - we can find 'opensta_main.timing.rpt' OpenSTA timing report file.
+
+
+
+
 
 
 
