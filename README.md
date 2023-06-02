@@ -50,7 +50,7 @@ Flop Ratio = 1613/14876 = 0.1084
 ![Screenshot of opensta timing report]() 
 
 ## Floorplanning
-### Defining width and height of core and die
+### 1. Defining width and height of core and die
 - Core: Section of the chip where the fundamental logic of the design is placed.
 - Die: Die encapsulates the core, and is a small semiconductor material specimen on which the fundamental circuit is fabricated.
 ![Screenshot of core_vs_die](core_vs_die)
@@ -65,6 +65,34 @@ Utilisation Factor = ______________________________
                          Total Area of the core
 Aspect Ratio = Height / Width         
 ```
+Example, where netlist area = 2x2 = 4 unit and core are = 4x4 = 16 unit:
+![Screenshot of example of Utilisation factor and Aspect ratio](uf_ar_example)
+
+### 2. Defining location of Pre-placed Cells
+If we have a huge combinational logic as a part of a design, that translates to say 100k gate netlist, we can take that out of the main netlist. 
+- We can simplify the netlist by dividing it into smaller circuits.
+- We can convert each netlist into blocks with individual inputs and outputs.  
+- These can be used as black blocks and reused wherever needed.
+
+![Screenshot of Combination logic to blocks](cl_to_blocks)
+![Screenshot of Blocks to Black Box](blocks_to_blackbox)
+
+The black box defined above then can be seperated into modules with their own inputs and outputs. Each of these modules will be implemented seperately and only once. They are usually called IPs or modules. An **IP** or **module** is individual circuit with it's own sets of input and ouputs that does a specific task. It can be incorporated in larger design to simplify the design process or used where the same circuit is repeated number of times in a design.
+![Screenshot of Black Box to IP](blackbox_to_ip)
+
+Some of the readily available IPs include
+- Memory
+- Clock Gating Cell
+- Comparators
+- Mux
+- DAC
+etc.
+
+- Arrangement of these IPs or modules is called **Floorplanning**. 
+- The location of these IPs or modules is fixed on a floorplan by the user before automated PnR is run, hence they are called **Pre-placed cells**. 
+- Once the location of these IPs is fixed, the automated PnR tool does not change their location but places rest of the logic cells in the design onto the chip.
+
+
 
 
 
