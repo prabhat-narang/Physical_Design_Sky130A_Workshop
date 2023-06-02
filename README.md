@@ -49,6 +49,23 @@ Flop Ratio = 1613/14876 = 0.1084
 
 ![Screenshot of opensta timing report]() 
 
+## Floorplanning
+### Defining width and height of core and die
+- Core: Section of the chip where the fundamental logic of the design is placed.
+- Die: Die encapsulates the core, and is a small semiconductor material specimen on which the fundamental circuit is fabricated.
+![Screenshot of core_vs_die](core_vs_die)
+
+Let's say we have a basic netlist. We can find the area of each individual standard cell component present in the netlist. We can leave the wires for now. By approximately adjoining he cells in apropriate places, we can find the area occupied by the netlist. 
+- We can find how efficient the placement of layout is with a metric, **Utilisation Factor**. 
+- We can find if the netlist is square shaped or in rectangle form by **Aspect Ratio**.
+
+```
+                      Area occupied by the netlist
+Utilisation Factor = ______________________________
+                         Total Area of the core
+Aspect Ratio = Height / Width         
+```
+
 
 
 
