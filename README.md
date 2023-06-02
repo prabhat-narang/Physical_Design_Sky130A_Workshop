@@ -86,9 +86,31 @@ Some of the readily available IPs include Memory, Clock Gating Cell, Comparators
 - The location of these IPs or modules is fixed on a floorplan by the user before automated PnR is run, hence they are called **Pre-placed cells**. 
 - Once the location of these IPs is fixed, the automated PnR tool does not change their location but places rest of the logic cells in the design onto the chip.
 
+If we have 3 IPs, Block 1, 2, and 3, we can place them on the floorplan depending on the physical I/O pins and the block's I/O pins as shown below. 
+![Screenshot of preplaced cells fixed](location_preplacedcell)
 
+### 3. Decoupling Capacitors
+In a switching circuit, all the elements such as a logic gate continously needs to switch their output from low-to-high or high-to-low. This element sees a capacitor at it's output as a load due to parasitic capacitance of the metal interconnects. During switching of output from low-to-high, current is drawn by the element from it's power supply's Vdd to charge the load capacitor at the output to the Vdd level of the circuit. Similarly, during switching from high-to-low, current is discharged from the output capacitor to the power supply's Vss pin so that output can be brought down to Vss level. This can be understood from following diagram.
 
+![Screenshot of need for decoupling](need_for_decoupling)
 
+Since the physical power supply pins are physically distant from modules or IPs that have these switching circuits, there are a series of physically long wires (wire bonds from physical pins and interconnects) that connect the Vdd and Vss of modules to chip's Vdd and Vss pins. These physical wires have considerable series inductance and resistance due to their small and limited dimensions. Thus, when during switching of the outputs of various logic elements from low-to-high, a in-rush current flows from Vdd to module's Vdd, and a in-rush current flows from module's Vss to Vss during switching from high-to-low of the outputs. This in-rush current causes momentary change in currents through the wires. This causes a voltage drop in the wires equal to
+```
+V_drop = i*R_dd + L_dd*(di/dt)
+```
+where R_dd is series resistance, L_dd is series inductance, and i is the current flowing through the wire. Same equation applies for R_ss and L_ss.
+
+This voltage drop reduces the Vdd of module to Vdd' and increases the Vss from 0 to Vss'. So, the output capacitor of logic elements in the module is charged to Vdd' that is available to it and and discharged to Vss'. This output is an input for the next element. Thus, the voltage swing range has been reduced for the next element's input. This swing range must remain in the noise margin range as shown below for the circuit to work.
+
+![Screenshot of noise margin](noise_margin)
+
+A large capacitor must be place physically close to the IP or module which charges from the power supply, and supplies the required charge for the elements to charge their output capacitors during switching action without significantly dropping the supply voltage of the module. 
+- The capacitor must be large so that there is no significant voltage change during discharging or charging of the capacitor from the in-rush currents from the module.
+- The capacitor must be physically close so that there is no appreciable series resistance and inductance of the wires connecting capacitor to the module.
+
+![Screenshot of decoupled IP](decoupled_ip)
+
+### 4. Power Planning
 
 
 
