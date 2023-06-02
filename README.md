@@ -80,13 +80,7 @@ If we have a huge combinational logic as a part of a design, that translates to 
 The black box defined above then can be seperated into modules with their own inputs and outputs. Each of these modules will be implemented seperately and only once. They are usually called IPs or modules. An **IP** or **module** is individual circuit with it's own sets of input and ouputs that does a specific task. It can be incorporated in larger design to simplify the design process or used where the same circuit is repeated number of times in a design.
 ![Screenshot of Black Box to IP](blackbox_to_ip)
 
-Some of the readily available IPs include
-- Memory
-- Clock Gating Cell
-- Comparators
-- Mux
-- DAC
-etc.
+Some of the readily available IPs include Memory, Clock Gating Cell, Comparators, Mux, DAC etc.
 
 - Arrangement of these IPs or modules is called **Floorplanning**. 
 - The location of these IPs or modules is fixed on a floorplan by the user before automated PnR is run, hence they are called **Pre-placed cells**. 
