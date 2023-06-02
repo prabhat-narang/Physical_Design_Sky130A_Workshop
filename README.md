@@ -108,11 +108,33 @@ A large capacitor must be place physically close to the IP or module which charg
 - The capacitor must be large so that there is no significant voltage change during discharging or charging of the capacitor from the in-rush currents from the module.
 - The capacitor must be physically close so that there is no appreciable series resistance and inductance of the wires connecting capacitor to the module.
 
+![Screenshot of decoupling](decoupling)
 ![Screenshot of decoupled IP](decoupled_ip)
 
 ### 4. Power Planning
 
+Let's say we have multiple modules each with their decoupling capacitors coneected to them placed all over the chip. If a module is driving it's output from low-to-high or vice versa, which is input to another module, the Vdd and Vss each module sees must be same or whithin noise margin range with respect to each other for the circuit to function properly. If the power supply is being supplied from a single point, the distance from the power supply will be different for each module and due the the series resistance and inductance, may see different power supply voltages.
+![Screenshot of single source of supply](single_source_supply)
 
+Also, if we have a multi-bit bus in which a number of bits are being switched from 1 to 0, the load capacitance on each bit line must be discharged from Vdd to 0 through a ground tap point each capacitor connects to if there is single ground source. This will cause significant current to flow through ground tap point which will cause a potential drop to appear at the local ground tap point with respect to Vss of the chip. This is called **ground bounce**.
+![Screenshot of Ground Bounce](ground_bounce)
+
+Similarly, if a number of bits are being switched from 0 to 1, a significant current flows from Vdd tap point of the module causing a voltage drop.
+![Screenshot of Voltage Drop](voltage_drop)
+
+If these voltage drops and bounce are greater than the respective noise margins, erroneous interpretation of the bit values may take place. To mitigate the above issues, power supply is supplied from multiple direction on the chip, so that currents take the path of least impedance to or from the modules. The Vdd and Vss interconnects are placed in a grid fashion so that there are multiple Vdd as well as Vss tap point available to the bus lines as well as to the modules so that there is no significant current flowing from one single wire at a time. this is ccalled as **power planning**.
+![Screenshot of Multi-Source Supply](multi_source_supply)
+![Screenshot of power planning](power_planning)
+
+### 5. Pin Placement
+Since the chip needs to interact with outside world, the input and output signals of the designed chips are connected to pins that communicate physically with the circuit outside the chips. The pins are usually placed such that inputs are on the left, and outputs are on the right. But this is one of the practices, not hard and fast rule, inputs can be on upper side, outputs below, or both on left etc. The pins are placed so that input of modules that connect to these pins are close by. Similarly, output of the modules need to be close to output pins so that routing becomes easy.
+- The pins are placed in the area between core and die.
+- The size and width of pins depends on the current that needs to pass through them, so power pins, clock pins are wide, whereas I/O pins are thin.
+![Screenshot of pin placement](pin_placement)
+
+### 6. Logical Cell Placement Blockage
+The region where pins are place, the region between core and die, is blocked so that the autorouter does not place cells here. This is called Logical Cell Placement Blockage.
+![Screenshot of Placement Blockage](placement_blockage)
 
 
 
