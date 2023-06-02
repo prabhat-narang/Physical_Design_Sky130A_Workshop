@@ -22,7 +22,11 @@ After successfull execution of design preparation step, a 'runs' folder appears 
 ![Screenshot of Reviewing Files]()
 
 ### Running Synthesis Step
-To run the sythesis step, which runs Yosys and ABC, run command `run_synthesis`. This step usually take 5-6 minutes to execute.
+To run the sythesis step, which runs Yosys and ABC, run command 
+```
+run_synthesis
+```
+This step usually take 5-6 minutes to execute.
 ![Screenshot of Synthesis step]()
 
 After the command has executed, Yosys + ABC as well as STA has been done. The final synthesis statistic report is displayed. 
@@ -42,10 +46,10 @@ Flop Ratio = 1613/14876 = 0.1084
 ![Screenshot of result synthesis]()
 
 
-- The synthesised netlist os generated in the '/results/synthesis' folder as described before. 
+- The synthesised netlist os generated in the `/results/synthesis` folder as described before. 
 - In the '/reports/synthesis' folder, 
-    - we can find '1-yosys_4.stat.rpt' statistics report as displayed in terminal after syntheis command is executed. 
-    - we can find '2-opensta_main.timing.rpt' OpenSTA timing report file.
+    - we can find `1-yosys_4.stat.rpt` statistics report as displayed in terminal after syntheis command is executed. 
+    - we can find `2-opensta_main.timing.rpt` OpenSTA timing report file.
 
 ![Screenshot of opensta timing report]() 
 
@@ -136,8 +140,48 @@ Since the chip needs to interact with outside world, the input and output signal
 The region where pins are place, the region between core and die, is blocked so that the autorouter does not place cells here. This is called Logical Cell Placement Blockage.
 ![Screenshot of Placement Blockage](placement_blockage)
 
+### Floorplan using OpenLANE
+- In this stage, we set die area, core area, utilisation factor, aspect ratio, place the I/O cells, make power distribution network and macro placement.
+- Standard cells are not placed in this stage, they are set in placement stage.
 
+We can set the switches to customise the floorplan stage. The switches for floorplan can be found in `openlane/configurations/README.md` file under the floorplan section. 
+![Screenshot of Floorplan Section of REAME](floorplanning_section_readme)
 
+Some important switches are:
+1. `FP_CORE_UTIL` : Core utilisation percentage.
+2. `FP_ASPECT_RATIO` : Aspect ratio of netlist
+3. `FP_CORE_MARGIN` : Margin in um, between core and die boundary
+4. `FP_IO_HMETAL` : Metal layer on which horizontal IO pins are placed. (Actual layer is +1 of this number)
+5. `FP_IO_VMETAL` : Metal layer on which vertical IO pins are placed. (Actual layer is +1 of this number)
+6. `FP_ENDCAP_CELL` : Decoupling cap information
+7. `FP_PDN_xxx` :  Power distribution network generation parameters (5 parameters)
+
+- These switches are set in `openlane/configurations/floorplan.tcl` file as general design parameters. 
+- For every project, the values can be customised in `config.tcl` files and PDK specific configuration file `[PDK]_sc_[variant]_config.tcl` in the project directory. 
+- PDK specific file `[PDK]_sc_[variant]_config.tcl` has highest priority, then `config.tcl` file, then `floorplan.tcl` file.
+
+To execute the floorplan stage
+```
+run_floorplan
+```
+
+A .def file is created in `results/floorplan` directory. 
+![Screenshot of def file](def_file)
+
+We can view the layout by open it in Magic with the command
+```
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+```
+Tech and merged lef files are provided to Magic for it to interpret the cells. `&` at the end of command frees up command line by pringing back the prompt.
+
+![Screenshot of Magic View after floorplanning](magic_layout_planning)
+![Screenshot of Pins and Decap in design](magic_pins_decap)
+
+- `s` key selects the chip design or anything (like pads) under the cursor. `v` key zooms out to the whole layout.
+- `z` key zooms in a block selected by left click and then right clicking.
+- `what` command in tkcon window gives information about selected component.
+- Standard cells are present in lower left corner as they are not placed yet.
+- Zooming near the pads, we can see decoupling capacitors.
 
 
 
