@@ -2,7 +2,10 @@
 
 
 ## Introduction to OpenLANE
-
+Helpful links:\ 
+- [OpenLANE Github repository](https://github.com/efabless/openlane)
+- [Fossi Dial Up Tim Ansell](https://www.youtube.com/watch?v=EczW2IWdnOM&list=PLUg3wIOWD8yoZCg9XpFSgEgljx6MSdm9L&index=2)
+- [Fossi Dial Up Mohamed Shalan](https://www.youtube.com/watch?v=Vhyv0eq_mLU&list=PLUg3wIOWD8yoZCg9XpFSgEgljx6MSdm9L&index=3)
 
 ### Directory Structure
 
