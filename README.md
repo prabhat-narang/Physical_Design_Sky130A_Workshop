@@ -285,12 +285,53 @@ We create a SPICE deck for a circuit. A SPICE deck has:
 ### 16 Mask CMOS Process 
 1. Selecting a substrate: Usually P-type, high resitivity, substrate doping level which is less than 'well' doping level, 100 orientation.
 2. Creating active regions for transistors
-3. N-well and P-well formation
-4. 
+3. N-well and P-well formation: In P-well, nmos transistor is made, and vice versa.
+4. Gate formation
+5. Lightly Doped Drain (LDD) formation: 2 reasons for this, 1) Hot electron effect, 2) Short channel effect. Both associated with reduction of size. N+ means high concentration, N- means low concentration.
+6. Source and Drain formation: Channeling effect is when vector velocity of ions matches with silicon structure, ions may go deep in P substrate without being blocked by Si atoms above. Screen oxide is used to randomize the ion directions and cause deposition.
+7. Contacts and local interconnects formation
+8. Higher level metal formation 
 
+![Screenshot of 16 Mask Process](st_mask_process)
 
+### Layout of Inverter in Magic
+The inverter repository is cloned to local machine in openlane directory.
+```
+git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+```
 
+The `pdks/sky130A/libs.tech/magic/sky130A.tech` file is copied to the folder created above.
+```
+cp sky130A.tech ...
+```
 
+To open the layout of inverter, Magic is called from `vsdstdcelldesign` folder and .mag file is opened.
+```
+magic -T sky130A.tech sky130_inv.mag &
+```
+
+To verify the design, 
+- we can check the connections by hovering the cursor, and pressing 's' key two or three times to select all the connected pins and wires.
+- The intersection of polysilicon layer with n diffusuion is where nmos is formed and vice versa. This can be verified by selecting the intersection region and passing `what` command in tkcon.
+
+*LEF files are abstract picture of the cell using only the metal layers. Useful for placement and protection of IP.*
+
+In the Magic Tool, we can check for DRC errors by clicking on DRC > DRC Find Next Error. The error can be viewed in tkcon window after the error site has been selected by Magic. 
+
+To extract the SPICE netlist from the layout, in the tkcon window, execute command
+```
+extract all
+```
+ This creates a .ext file in the folder. To extract the parasitic resistance and capacitance value,
+```
+ext2spice cthresh 0 rthresh0
+```
+No new file will be created. To get the final .spice file, execute
+```
+ext2spice
+```
+
+![Screenshot of MAGIC inverter layout](magic_inv_layout)
 
 
 
