@@ -183,6 +183,40 @@ Tech and merged lef files are provided to Magic for it to interpret the cells. `
 - Standard cells are present in lower left corner as they are not placed yet.
 - Zooming near the pads, we can see decoupling capacitors.
 
+## Placement
+
+### 1. Library Binding
+For each component in netllist, like FFs, gates etc, a library has information about their physical dimension of the cell, various flavours of the same cell, and timing information among others. This library information is 'binded' or correlated to the each component in the netlist.
+
+### 2. Placement
+Without disturbing or moving the pre-placed cells, the cells corresponding to netlist components are placed on the core. Their placemment depends on distance from pins, distance between nearby components in netlist etc.
+![Screenshot of placement](placement)
+
+### 3. Optimising placement
+- With the cells placed, wire path from pin to cell or cell to cell is approximated, and based on that, wire parameters like capacitance, resistance etc are calculated for simulation. 
+- The signal integrity is tested by checking if the slew rate is within the acceptable range for the approximated wire.
+- If the slew rate is not within acceptable range, it means wire lenth is too large for proper signal integrity.
+- In this case, buffers (or repetaers) are placed in between the path where signal integrity was violated.
+- In case of high frequency designs, the individual cells are placed right next to each other to minimise the delay caused by the wires. This is called **Abutment** (eg. yellow cells)
+- In case criss crossing happens, ie, when we can see the paths of wires may intersect while routing, one of the solution is to route on different metal layers.
+
+![Screenshot of Potimising Placement](placement_optimisation)
+
+### Placement using OpenLANE
+- Placement occurs in 2 stages, Global and Detailed. Global Placement done using **RePlAce**.
+- Congestion aware placement and timing constrained placement. In this, congestion aware placement is done.
+- In global placement, objective is to reduce wire length by reduction of parameter HPWL (Half Parameter Wire Length).
+
+To run Placement stage, run the command
+```
+run_placement
+```
+
+Results are stored in `results/placement` folder in .def file.
+
+![Screenshot of final placement](placement_final)
+![Screenshot of zoomed placement](placement_zoom)
+
 
 
 
