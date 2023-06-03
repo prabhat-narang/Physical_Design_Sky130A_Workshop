@@ -212,10 +212,52 @@ To run Placement stage, run the command
 run_placement
 ```
 
-Results are stored in `results/placement` folder in .def file.
+Results are stored in `results/placement` folder in .def file. Results can be viewed in Magic by
+
+```
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
 
 ![Screenshot of final placement](placement_final)
 ![Screenshot of zoomed placement](placement_zoom)
+
+## Cell Design Flow
+A library consists of cells (like buuders, FFs etc) with different parameters like size, drive strength, Vth etc. The cell is designed with the following flow.
+1. Inputs: Input to the cell design flow is PDKs. PDKs defiine DRC and LVS rules (in tech file), SPICE models, library and user-defined specs. Library defined specs include cell height, cell width, drive strength. User defined spec include supply voltage, metal layers, pin locations etc. 
+2. Design Steps: This step includes-
+  -  Circuit design step: Functionality of the cell is implemented using nmos and pmos, and the circuit parameters are defined based on the requirements. For eq, W/L ratio of nmos and pmos are desfined based on current requirement, switching point etc. Outpput of this step is CDL.
+  -  Layout design step: Based on Euler's path and stick diagram. From the circuit design above, nmos and pmos network graphs are extracted. Then, the Euler's path is obtained. After that, a stick diagram is drawn. From stick diagram, proper layout diagram is drawn by adhering to the rules and specs from the Inputs stage. This diagram is used to make the actual layout in the EDA tool.
+  -  Characterisation: Flow- Read in the SPICE model from PDK. Read extracted SPICE Netlist. Recognise beahviour of buffer. Read sub-circuit of buffer. Power supply is applied to the circuit. Necessary stimulus is given as input to the circuit. Output load capacitance is defined. Simulation parameters are defined. All these parameters as configuration file is provided to **GUNA** software and output is generated as varrious .lib files.
+3. Outputs: Outputs include:
+  - CDL (Circuit Descriptin Language): Output of Circuit design step.
+  - GDSII, LEF, extracted spice netlist (.cir): GDSII is layout file, LEF stores dimensions of cell, .cir file stored extracted parasitic R,L,C values from the layout. These are output of Layout step.
+  - Timing, noise, power .libs function: Output of characterisation step.
+
+![Screenshot of Cell Design Flow](cell_design_flow)
+
+### Timing Characterisation
+**Timing Threshold Definitions**
+1. `slew_low_rise_thr`: low point on rising waveform to calculate slew.
+2. `slew_high_rise_thr`: high point on rising waveform to calculate slew.
+3. `slew_low_fall_thr`: low point on falling waveform to calculate slew.
+4. `slew_high_fall_thr`: high point on falling waveform to calculate slew.
+5. `in_rise_thr`: threshold point on input rising waveform
+6. `in_fall_thr`: threshold point on input falling waveform
+7. `out_rise_thr`: threshold point on output rising waveform
+8. `out_fall_thr`: threshold point on output falling waveform
+
+To calculate propogation delay between input and output of buffer, we use the time differnce between `out_rise_thr` and `in_rise_thr` point on waveform or vice-versa.
+```
+Tpd = T(out_*_thr) - T(in_*_thr)
+```
+There can be error in finding the delay value and delay values can come out as negative in the following case.
+- Thereshold value is not correctly set.
+- The circuit is faulty and/or there is a huge slew in rising/falling waveform.
+
+To calculate slew
+ ```
+ Tslew = T(slew_high_*_thr) - T(slew_low_*_thr)
+ ```
 
 
 
