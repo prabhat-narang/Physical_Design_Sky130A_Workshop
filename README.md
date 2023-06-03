@@ -183,6 +183,13 @@ Tech and merged lef files are provided to Magic for it to interpret the cells. `
 - Standard cells are present in lower left corner as they are not placed yet.
 - Zooming near the pads, we can see decoupling capacitors.
 
+If we want to change the configurations on the go, for eg. IO placement mode,
+```
+set ::env(FP_IO_MODE) 2
+run_floorplan
+```
+
+
 ## Placement
 
 ### 1. Library Binding
@@ -258,6 +265,33 @@ To calculate slew
  ```
  Tslew = T(slew_high_*_thr) - T(slew_low_*_thr)
  ```
+## Designing a library cell
+We create a SPICE deck for a circuit. A SPICE deck has:
+- Model
+- Netlist
+- Component Values
+- Indentify 'Nodes'
+- Name 'Nodes'
+- Simulation Information
+- library files
+
+**Switching Threshold**
+- Inverter is very robust circuit. With varying W/L ratios of pmos and nmos, the DC transfer characteristics waveform only shifts but the shape remains intact.
+- One of the parameter to quantify robustness of inverter if **Threshold Voltage (Vm)**
+- Point where `Vin = Vout`
+- `IdsP = -IdsN` at this point
+- Both transistors in saturation region
+
+### 16 Mask CMOS Process 
+1. Selecting a substrate: Usually P-type, high resitivity, substrate doping level which is less than 'well' doping level, 100 orientation.
+2. Creating active regions for transistors
+3. N-well and P-well formation
+4. 
+
+
+
+
+
 
 
 
