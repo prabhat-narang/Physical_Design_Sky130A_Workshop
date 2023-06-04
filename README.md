@@ -302,7 +302,7 @@ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
 
 The `pdks/sky130A/libs.tech/magic/sky130A.tech` file is copied to the folder created above.
 ```
-cp sky130A.tech ...
+cp sky130A.tech ~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
 ```
 
 To open the layout of inverter, Magic is called from `vsdstdcelldesign` folder and .mag file is opened.
@@ -321,19 +321,34 @@ In the Magic Tool, we can check for DRC errors by clicking on DRC > DRC Find Nex
 To extract the SPICE netlist from the layout, in the tkcon window, execute command
 ```
 extract all
-```
- This creates a .ext file in the folder. To extract the parasitic resistance and capacitance value,
-```
 ext2spice cthresh 0 rthresh0
-```
-No new file will be created. To get the final .spice file, execute
-```
 ext2spice
 ```
+This extractx the parasitic resistance and capacitance value, and creates a .ext file in the folder. Final command creates .spice file.
 
 ![Screenshot of MAGIC inverter layout](magic_inv_layout)
 
+The spice file is edited to include libraries, values of components are changed, simulation commands are entered, inputs are given.
+```
+```
 
+![Screenshot of SPICE file](spice_file)
+ 
+This file is then simulated using ngspice with the following command.
 
+```
+ngspice sky130_inverter.spice
+```
 
+The output 'y' waveform wrt time can be plotted by varying input 'a' by executing the following command in nsgspice prompt.
+```
+plot y vs time a
+```
+![Screenshot of SPICE file simulation](spice_file_sim)
+The calculated inverter parameters are given below by taking `slew_low_*_thr` as 20%, `slew_high_*_thr` as 80%, and `in_*_thr`/`out_*_thr` as 50%:
+```
+Trise = 
+Tfall = 
+Tpd = 
+```
 
