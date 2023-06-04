@@ -347,8 +347,8 @@ plot y vs time a
 ![Screenshot of SPICE file simulation](spice_file_sim)
 The calculated inverter parameters are given below by taking `slew_low_*_thr` as 20%, `slew_high_*_thr` as 80%, and `in_*_thr`/`out_*_thr` as 50%:
 ```
-Trise = 
-Tfall = 
-Tpd = 
+Trise = 2.23977ns - 2.18015ns = 59.62ps
+Tfall = 4.09341ns - 4.05063ns = 42.78ps
+Tpd = 2.20722ns - 2.15052ns = 56.7ps
 ```
 
