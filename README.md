@@ -330,6 +330,29 @@ This extractx the parasitic resistance and capacitance value, and creates a .ext
 
 The spice file is edited to include libraries, values of components are changed, simulation commands are entered, inputs are given.
 ```
+* SPICE3 file created from sky130_inv.ext - technology: sky130A
+
+.option scale=0.01u
+.include ./libs/pshort.lib
+.include ./libs/nshort.lib
+
+//.subckt sky130_inv A Y VPWR VGND
+M0 Y A VGND VGND nshort_model.0 ad=1.44n pd=0.152m as=1.37n ps=0.148m w=35 l=23
+M1 Y A VPWR VPWR pshort_model.0 ad=1.44n pd=0.152m as=1.52n ps=0.156m w=37 l=23
+VDD VPWR 0 3.3V
+VSS VGND 0 0V
+Va A VGND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
+C0 VPWR A 0.0774fF
+C1 Y VPWR 0.117fF
+C2 Y A 0.0754fF
+C3 Y VGND 2fF
+C4 A VGND 0.45fF
+VPWR VGND 0.781fF
+.tran 1n 20n
+.control
+run
+.endc
+//.ends
 ```
 
 ![Screenshot of SPICE file](spice_file)
@@ -349,6 +372,7 @@ The calculated inverter parameters are given below by taking `slew_low_*_thr` as
 ```
 Trise = 2.23977ns - 2.18015ns = 59.62ps
 Tfall = 4.09341ns - 4.05063ns = 42.78ps
-Tpd = 2.20722ns - 2.15052ns = 56.7ps
+Td_rise = 2.20722ns - 2.15052ns = 56.7ps
+Td_fall - 4.07536ns - 4.05018ns = 25.18ps
 ```
 
